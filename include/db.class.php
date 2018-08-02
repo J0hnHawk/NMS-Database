@@ -1,0 +1,177 @@
+<?php
+// $statement->errorInfo ()[2]
+class dbOperations {
+	var $pdo = NULL;
+	var $prefix = NULL;
+	public function __construct($dbhost, $dbname, $dbuser, $dbpass, $tablePrefix) {
+		$this->prefix = $tablePrefix;
+		$this->pdo = new PDO ( "mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass );
+		$this->pdo->exec ( "SET CHARACTER SET utf8" );
+	}
+	/*
+	 * ****************************************************************************************************
+	 * *** Allgemeine Datenbankfunktionen
+	 * ****************************************************************************************************
+	 */
+	public function insert($table, $dataFields) {
+		$fullTable = $this->prefix . $table;
+		$columns = implode ( ', ', array_keys ( $dataFields ) );
+		$values = rtrim ( str_repeat ( '?, ', sizeof ( $dataFields ) ), ', ' );
+		$statement = $this->pdo->prepare ( "INSERT INTO $fullTable ($columns) VALUES ($values)" );
+		if ($statement->execute ( array_values ( $dataFields ) )) {
+			$id = $this->pdo->lastInsertId ();
+			self::updateConfigFiles ();
+			return ($id == 0) ? 1 : $id;
+		} else {
+			// echo "SQL Error <br />";
+			// echo $statement->queryString . "<br />";
+			// echo $statement->errorInfo ()[2];
+			return false;
+		}
+	}
+	public function select() {
+	}
+	public function update($table, $dataFields, $where) {
+		$fullTable = $this->prefix . $table;
+		$whereColumns = self::setWhere ( $where );
+		$columns = self::setColumns ( $dataFields );
+		$sql = "UPDATE $fullTable SET $columns WHERE $whereColumns";
+		$dataFields = array_merge ( $dataFields, $where );
+		$statement = $this->pdo->prepare ( $sql );
+		if ($statement->execute ( $dataFields )) {
+			self::updateConfigFiles ();
+			return true;
+		} else {
+			// echo "SQL Error <br />";
+			// echo $statement->queryString . "<br />";
+			// echo $statement->errorInfo () [2];
+		}
+	}
+	public function delete($table, $where) {
+		$fullTable = $this->prefix . $table;
+		$whereColumns = self::setWhere ( $where );
+		$sql = "DELETE FROM $fullTable WHERE $whereColumns";
+		$statement = $this->pdo->prepare ( $sql );
+		$retVar1 = $statement->execute ( $where );
+		return $retVar1;
+	}
+	public function getWholeTable($table) {
+		$fullTable = $this->prefix . $table;
+		$rows = array ();
+		$statement = $this->pdo->prepare ( "SELECT *,IF(german IS NULL or german = '', name, german) as name FROM $fullTable " ); // ORDER BY name ASC
+		$statement->execute ();
+		if ($statement->rowCount () > 0) {
+			$rows = $statement->fetchAll ( PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC );
+		}
+		return $rows;
+	}
+	function setColumns($columns) {
+		$retString = '';
+		foreach ( $columns as $column => $value ) {
+			$retString .= "$column = :$column, ";
+		}
+		return rtrim ( $retString, ', ' );
+	}
+	function setWhere($columns) {
+		$retString = '';
+		foreach ( $columns as $column => $value ) {
+			$retString .= "$column = :$column AND ";
+		}
+		return rtrim ( $retString, ' AND ' );
+	}
+	/*
+	 * ****************************************************************************************************
+	 * *** Galaxies
+	 * ****************************************************************************************************
+	 */
+
+	/*
+	 * ****************************************************************************************************
+	 * *** Systems
+	 * ****************************************************************************************************
+	 */
+	public function getSystems($galaxy) {
+		$fullTable = $this->prefix . 'systems';
+		$systems = array ();
+		$statement = $this->pdo->prepare ( "SELECT * FROM $fullTable WHERE galaxyId = ? ORDER BY name ASC" );
+		$statement->execute ( $galaxy );
+		if ($statement->rowCount () > 0) {
+			$systems = $statement->fetchAll ( PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC );
+		}
+		return $systems;
+	}
+
+	/*
+	 * ****************************************************************************************************
+	 * *** Planets
+	 * ****************************************************************************************************
+	 */
+	public function getPlanets($system) {
+		$fullTable = $this->prefix . 'planets';
+		$planets = array ();
+		$statement = $this->pdo->prepare ( "SELECT * FROM $fullTable WHERE systemId = ? ORDER BY name ASC" );
+		$statement->execute ( $system );
+		if ($statement->rowCount () > 0) {
+			$planets = $statement->fetchAll ( PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC );
+		}
+		return $planets;
+	}
+
+	/*
+	 * ****************************************************************************************************
+	 * *** Lifeforms
+	 * ****************************************************************************************************
+	 */
+
+	/*
+	 * ****************************************************************************************************
+	 * *** Economies
+	 * ****************************************************************************************************
+	 */
+
+	/*
+	 * ****************************************************************************************************
+	 * *** Wealth
+	 * ****************************************************************************************************
+	 */
+
+	/*
+	 * ****************************************************************************************************
+	 * *** Conflict Level
+	 * ****************************************************************************************************
+	 */
+
+	/*
+	 * ****************************************************************************************************
+	 * *** Configdatenbank
+	 * ****************************************************************************************************
+	 */
+	public function getConfigValue($configName) {
+		$fullTable = $this->prefix . 'config';
+		$sql = "SELECT configValue FROM $fullTable WHERE configName = ?";
+		$statement = $this->pdo->prepare ( $sql );
+		$statement->execute ( array (
+				$configName
+		) );
+		if ($statement->rowCount () == 1) {
+			$row = $statement->fetch ();
+			return $row ['configValue'];
+		} else
+			return false;
+	}
+	public function setConfigValue($configName, $configValue) {
+		if (self::getConfigValue ( $configName )) {
+			$ret = self::update ( 'config', array (
+					'configValue' => $configValue
+			), array (
+					'configName' => $configName
+			) );
+		} else {
+			$ret = self::insert ( 'config', array (
+					'configValue' => $configValue,
+					'configName' => $configName
+			) );
+		}
+		return $ret;
+	}
+}

@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+define('IN_NMSD', true);
 session_start ();
 require_once ('include/config.php');
 require ('./include/db.class.php');
@@ -40,6 +41,6 @@ $smarty->assign ( 'style', $style );
 $smarty->setTemplateDir ( "./styles/$style" );
 $smarty->setCompileDir ( './compile' );
 
-include ('include/cards.php');
+include ('include/galaxy.php');
 
 $smarty->display ( 'index.tpl' );

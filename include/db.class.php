@@ -1,4 +1,7 @@
 <?php
+if (! defined ( 'IN_NMSD' )) {
+	exit ();
+}
 // $statement->errorInfo ()[2]
 class dbOperations {
 	var $pdo = NULL;
@@ -106,11 +109,22 @@ class dbOperations {
 	 * *** Planets
 	 * ****************************************************************************************************
 	 */
-	public function getPlanets($system) {
+	public function getSystemPlanets($system) {
 		$fullTable = $this->prefix . 'planets';
 		$planets = array ();
 		$statement = $this->pdo->prepare ( "SELECT * FROM $fullTable WHERE systemId = ? ORDER BY name ASC" );
 		$statement->execute ( $system );
+		if ($statement->rowCount () > 0) {
+			$planets = $statement->fetchAll ( PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC );
+		}
+		return $planets;
+	}
+	public function getGalaxyPlanets($galaxy) {
+		$fullPTable = $this->prefix . 'planets';
+		$fullSTable = $this->prefix . 'systems';
+		$planets = array ();
+		$statement = $this->pdo->prepare ( "SELECT $fullPTable.* FROM $fullSTable, $fullPTable WHERE $fullSTable.galaxyId = ? AND $fullSTable.id = $fullPTable.systemId ORDER BY $fullPTable.name ASC" );
+		$statement->execute ( $galaxy );
 		if ($statement->rowCount () > 0) {
 			$planets = $statement->fetchAll ( PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC );
 		}

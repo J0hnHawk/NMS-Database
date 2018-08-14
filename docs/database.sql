@@ -184,7 +184,8 @@ CREATE TABLE `systems` (
   `lifeformId` int(11) NOT NULL,
   `economyId` int(11) NOT NULL,
   `wealthId` int(11) NOT NULL,
-  `conflictId` int(11) NOT NULL
+  `conflictId` int(11) NOT NULL,
+  `notes` varchar(255) COLLATE utf8_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------

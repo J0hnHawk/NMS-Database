@@ -1,4 +1,7 @@
 <?php
+if (! defined ( 'IN_NMSD' )) {
+	exit ();
+}
 function GetParam($ParamName, $Method = "P", $DefaultValue = "") {
 	if ($Method == "P") {
 		if (isset ( $_POST [$ParamName] ))

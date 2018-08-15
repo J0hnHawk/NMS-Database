@@ -23,12 +23,11 @@ class dbOperations {
 		$statement = $this->pdo->prepare ( "INSERT INTO $fullTable ($columns) VALUES ($values)" );
 		if ($statement->execute ( array_values ( $dataFields ) )) {
 			$id = $this->pdo->lastInsertId ();
-			self::updateConfigFiles ();
 			return ($id == 0) ? 1 : $id;
 		} else {
-			// echo "SQL Error <br />";
-			// echo $statement->queryString . "<br />";
-			// echo $statement->errorInfo ()[2];
+			echo "SQL Error <br />";
+			echo $statement->queryString . "<br />";
+			echo $statement->errorInfo () [2];
 			return false;
 		}
 	}
@@ -42,12 +41,11 @@ class dbOperations {
 		$dataFields = array_merge ( $dataFields, $where );
 		$statement = $this->pdo->prepare ( $sql );
 		if ($statement->execute ( $dataFields )) {
-			self::updateConfigFiles ();
 			return true;
 		} else {
-			// echo "SQL Error <br />";
-			// echo $statement->queryString . "<br />";
-			// echo $statement->errorInfo () [2];
+			echo "SQL Error <br />";
+			echo $statement->queryString . "<br />";
+			echo $statement->errorInfo () [2];
 		}
 	}
 	public function delete($table, $where) {
@@ -55,13 +53,19 @@ class dbOperations {
 		$whereColumns = self::setWhere ( $where );
 		$sql = "DELETE FROM $fullTable WHERE $whereColumns";
 		$statement = $this->pdo->prepare ( $sql );
-		$retVar1 = $statement->execute ( $where );
-		return $retVar1;
+		if ($statement->execute ( $where )) {
+			return true;
+		} else {
+			echo "SQL Error <br />";
+			echo $statement->queryString . "<br />";
+			echo $statement->errorInfo () [2];
+			return false;
+		}
 	}
 	public function getWholeTable($table) {
 		$fullTable = $this->prefix . $table;
 		$rows = array ();
-		$statement = $this->pdo->prepare ( "SELECT *,IF(german IS NULL or german = '', name, german) as name FROM $fullTable " ); // ORDER BY name ASC
+		$statement = $this->pdo->prepare ( "SELECT *,IF(german IS NULL or german = '', name, german) as name FROM `$fullTable` ORDER BY name ASC" ); // ORDER BY name ASC
 		$statement->execute ();
 		if ($statement->rowCount () > 0) {
 			$rows = $statement->fetchAll ( PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC );
@@ -97,11 +101,26 @@ class dbOperations {
 		$fullTable = $this->prefix . 'systems';
 		$systems = array ();
 		$statement = $this->pdo->prepare ( "SELECT * FROM $fullTable WHERE galaxyId = ? ORDER BY name ASC" );
-		$statement->execute ( $galaxy );
+		$statement->execute ( array (
+				$galaxy
+		) );
 		if ($statement->rowCount () > 0) {
 			$systems = $statement->fetchAll ( PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC );
 		}
 		return $systems;
+	}
+	public function deleteSystem($systemId) {
+		$statement = $this->pdo->prepare ( "DELETE `planet-resource` FROM `planet-resource` LEFT JOIN `planets` ON `planet-resource`.`planetId` = `planets`.`id` WHERE `systemId` = ? " );
+		$statement->execute ( array (
+				$systemId
+		) );
+		$statement = $this->pdo->prepare ( "DELETE FROM `planets` WHERE `systemId` = ? ORDER BY `planetMoonId` DESC" );
+		$statement->execute ( array (
+				$systemId
+		) );
+		$this->delete ( 'systems', array (
+				'id' => $systemId
+		) );
 	}
 
 	/*
@@ -136,6 +155,22 @@ class dbOperations {
 	 * *** Lifeforms
 	 * ****************************************************************************************************
 	 */
+
+	/*
+	 * ****************************************************************************************************
+	 * *** Waren
+	 * ****************************************************************************************************
+	 */
+	public function getRessources() {
+		$fullTable = $this->prefix . 'commodities';
+		$ressources = array ();
+		$statement = $this->pdo->prepare ( "SELECT *,IF(german IS NULL or german = '', name, german) as name FROM $fullTable WHERE categoryId = 1 ORDER BY name ASC" );
+		$statement->execute ( );
+		if ($statement->rowCount () > 0) {
+			$ressources = $statement->fetchAll ( PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC );
+		}
+		return $ressources;
+	}
 
 	/*
 	 * ****************************************************************************************************

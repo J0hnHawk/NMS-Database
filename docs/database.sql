@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 02. Aug 2018 um 15:12
+-- Erstellungszeit: 15. Aug 2018 um 15:19
 -- Server-Version: 10.1.30-MariaDB
 -- PHP-Version: 7.2.1
 
@@ -63,10 +63,10 @@ CREATE TABLE `commodities` (
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `conflict_level`
+-- Tabellenstruktur für Tabelle `conflict`
 --
 
-CREATE TABLE `conflict_level` (
+CREATE TABLE `conflict` (
   `id` int(11) NOT NULL,
   `name` varchar(42) COLLATE utf8_bin NOT NULL,
   `german` varchar(42) COLLATE utf8_bin DEFAULT NULL
@@ -88,12 +88,25 @@ CREATE TABLE `economy` (
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `fauna-flora`
+--
+
+CREATE TABLE `fauna-flora` (
+  `id` int(11) NOT NULL,
+  `name` varchar(42) COLLATE utf8_bin NOT NULL,
+  `german` varchar(42) COLLATE utf8_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `galaxies`
 --
 
 CREATE TABLE `galaxies` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8_bin NOT NULL
+  `name` varchar(42) COLLATE utf8_bin NOT NULL,
+  `german` varchar(42) COLLATE utf8_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
@@ -104,7 +117,8 @@ CREATE TABLE `galaxies` (
 
 CREATE TABLE `lifeform` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8_bin NOT NULL
+  `name` varchar(42) COLLATE utf8_bin NOT NULL,
+  `german` varchar(42) COLLATE utf8_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
@@ -161,6 +175,18 @@ CREATE TABLE `refinery` (
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `sentinel`
+--
+
+CREATE TABLE `sentinel` (
+  `id` int(11) NOT NULL,
+  `name` varchar(42) COLLATE utf8_bin NOT NULL,
+  `german` varchar(42) COLLATE utf8_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `storage`
 --
 
@@ -179,13 +205,13 @@ CREATE TABLE `storage` (
 
 CREATE TABLE `systems` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8_bin NOT NULL,
+  `name` varchar(42) COLLATE utf8_bin NOT NULL,
   `galaxyId` int(11) NOT NULL,
-  `lifeformId` int(11) NOT NULL,
-  `economyId` int(11) NOT NULL,
-  `wealthId` int(11) NOT NULL,
-  `conflictId` int(11) NOT NULL,
-  `notes` varchar(255) COLLATE utf8_bin NOT NULL
+  `lifeformId` int(11) DEFAULT NULL,
+  `economyId` int(11) DEFAULT NULL,
+  `wealthId` int(11) DEFAULT NULL,
+  `conflictId` int(11) DEFAULT NULL,
+  `notes` varchar(255) COLLATE utf8_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
@@ -237,15 +263,21 @@ ALTER TABLE `commodities`
   ADD KEY `categoryId` (`categoryId`) USING BTREE;
 
 --
--- Indizes für die Tabelle `conflict_level`
+-- Indizes für die Tabelle `conflict`
 --
-ALTER TABLE `conflict_level`
+ALTER TABLE `conflict`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indizes für die Tabelle `economy`
 --
 ALTER TABLE `economy`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indizes für die Tabelle `fauna-flora`
+--
+ALTER TABLE `fauna-flora`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -275,7 +307,11 @@ ALTER TABLE `planets`
   ADD PRIMARY KEY (`id`),
   ADD KEY `planetMoonId` (`planetMoonId`) USING BTREE,
   ADD KEY `biomeId` (`biomeId`) USING BTREE,
-  ADD KEY `systemId` (`systemId`) USING BTREE;
+  ADD KEY `systemId` (`systemId`) USING BTREE,
+  ADD KEY `weatherId` (`weatherId`),
+  ADD KEY `sentinelId` (`sentinelId`),
+  ADD KEY `faunaId` (`faunaId`),
+  ADD KEY `floraId` (`floraId`);
 
 --
 -- Indizes für die Tabelle `refinery`
@@ -286,6 +322,12 @@ ALTER TABLE `refinery`
   ADD KEY `output` (`output`) USING BTREE,
   ADD KEY `input1` (`input1`) USING BTREE,
   ADD KEY `input3` (`input3`) USING BTREE;
+
+--
+-- Indizes für die Tabelle `sentinel`
+--
+ALTER TABLE `sentinel`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indizes für die Tabelle `storage`
@@ -340,15 +382,21 @@ ALTER TABLE `commodities`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT für Tabelle `conflict_level`
+-- AUTO_INCREMENT für Tabelle `conflict`
 --
-ALTER TABLE `conflict_level`
+ALTER TABLE `conflict`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT für Tabelle `economy`
 --
 ALTER TABLE `economy`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `fauna-flora`
+--
+ALTER TABLE `fauna-flora`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -379,6 +427,12 @@ ALTER TABLE `planets`
 -- AUTO_INCREMENT für Tabelle `refinery`
 --
 ALTER TABLE `refinery`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT für Tabelle `sentinel`
+--
+ALTER TABLE `sentinel`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -428,7 +482,11 @@ ALTER TABLE `planet-resource`
 ALTER TABLE `planets`
   ADD CONSTRAINT `planets_ibfk_1` FOREIGN KEY (`planetMoonId`) REFERENCES `planets` (`id`),
   ADD CONSTRAINT `planets_ibfk_2` FOREIGN KEY (`systemId`) REFERENCES `systems` (`id`),
-  ADD CONSTRAINT `planets_ibfk_3` FOREIGN KEY (`biomeId`) REFERENCES `biomes` (`id`);
+  ADD CONSTRAINT `planets_ibfk_3` FOREIGN KEY (`biomeId`) REFERENCES `biomes` (`id`),
+  ADD CONSTRAINT `planets_ibfk_4` FOREIGN KEY (`weatherId`) REFERENCES `weather` (`id`),
+  ADD CONSTRAINT `planets_ibfk_5` FOREIGN KEY (`sentinelId`) REFERENCES `sentinel` (`id`),
+  ADD CONSTRAINT `planets_ibfk_6` FOREIGN KEY (`faunaId`) REFERENCES `fauna-flora` (`id`),
+  ADD CONSTRAINT `planets_ibfk_7` FOREIGN KEY (`floraId`) REFERENCES `fauna-flora` (`id`);
 
 --
 -- Constraints der Tabelle `refinery`
@@ -453,7 +511,7 @@ ALTER TABLE `systems`
   ADD CONSTRAINT `systems_ibfk_2` FOREIGN KEY (`lifeformId`) REFERENCES `lifeform` (`id`),
   ADD CONSTRAINT `systems_ibfk_3` FOREIGN KEY (`economyId`) REFERENCES `economy` (`id`),
   ADD CONSTRAINT `systems_ibfk_4` FOREIGN KEY (`wealthId`) REFERENCES `wealth` (`id`),
-  ADD CONSTRAINT `systems_ibfk_5` FOREIGN KEY (`conflictId`) REFERENCES `conflict_level` (`id`);
+  ADD CONSTRAINT `systems_ibfk_5` FOREIGN KEY (`conflictId`) REFERENCES `conflict` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

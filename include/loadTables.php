@@ -9,12 +9,14 @@ if (! isset ( $galaxies [$galaxy] )) {
 }
 $smarty->assign ( 'galaxies', $galaxies );
 $smarty->assign ( 'galaxy', $galaxy );
-$systems = $db->getSystems ( array (
-		$galaxy
-) );
-$smarty->assign ( 'systems', $systems );
+$systems = $db->getSystems ( $galaxy );
+// $smarty->assign ( 'systems', $systems );
 
 $smarty->assign ( 'lifeform', $db->getWholeTable ( 'lifeform' ) );
 $smarty->assign ( 'economy', $db->getWholeTable ( 'economy' ) );
 $smarty->assign ( 'wealth', $db->getWholeTable ( 'wealth' ) );
-$smarty->assign ( 'conflict', $db->getWholeTable ( 'conflict_level' ) );
+$smarty->assign ( 'conflict', $db->getWholeTable ( 'conflict' ) );
+$smarty->assign ( 'biomes', $db->getWholeTable ( 'biomes' ) );
+$smarty->assign ( 'weather', $db->getWholeTable ( 'weather' ) );
+$smarty->assign ( 'faunaFlora', $db->getWholeTable ( 'fauna-flora' ) );
+$smarty->assign ( 'sentinel', $db->getWholeTable ( 'sentinel' ) );

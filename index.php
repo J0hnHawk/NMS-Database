@@ -36,7 +36,7 @@ $style = 'bootstrap4';
 
 $smarty = new Smarty ();
 $smarty->caching = false;
-$smarty->debugging = false;
+$smarty->debugging = true;
 $smarty->assign ( 'style', $style );
 $smarty->setTemplateDir ( "./styles/$style" );
 $smarty->setCompileDir ( './compile' );

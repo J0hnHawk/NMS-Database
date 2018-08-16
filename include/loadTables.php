@@ -18,5 +18,6 @@ $smarty->assign ( 'wealth', $db->getWholeTable ( 'wealth' ) );
 $smarty->assign ( 'conflict', $db->getWholeTable ( 'conflict' ) );
 $smarty->assign ( 'biomes', $db->getWholeTable ( 'biomes' ) );
 $smarty->assign ( 'weather', $db->getWholeTable ( 'weather' ) );
-$smarty->assign ( 'faunaFlora', $db->getWholeTable ( 'fauna-flora' ) );
+$smarty->assign ( 'fauna', $db->getWholeTable ( 'fauna' ) );
+$smarty->assign ( 'flora', $db->getWholeTable ( 'flora' ) );
 $smarty->assign ( 'sentinel', $db->getWholeTable ( 'sentinel' ) );

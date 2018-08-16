@@ -80,7 +80,8 @@
 	        next = next + 1;
 	        var append = '<div id="planet' + next + '" class="input-group"><input class="form-control mt-3" id="planetl' + next + '" name="planetname[]" type="text"><div class="input-group-append"><button id="r' + (next - 1) + '" class="btn btn-danger remove-me mt-3" style="width: 50px">-</button></div></div>';
 	        $("#addbefore").before(append);
-	        $("#planet" + next).attr('data-source',$(newplanet).attr('data-source'));
+	        //alert($(newplanet).attr('data-source'));
+	        //$("#planet" + next).attr('data-source',$(newplanet).attr('data-source'));
 	        $("#count").val(next);	        
 	            $('.remove-me').click(function(e){
 	                e.preventDefault();

@@ -6,6 +6,9 @@ if (! defined ( 'IN_NMSD' )) {
 include ('include/loadTables.php');
 $page = GetParam ( 'page', 'G', 'systems' );
 switch ($page) {
+	case 'overview' :
+		//include('include/systems.php');
+		break;
 	case 'systems' :
 		include('include/systems.php');
 		break;

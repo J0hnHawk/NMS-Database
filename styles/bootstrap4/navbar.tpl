@@ -11,9 +11,12 @@
 					<div class="dropdown-menu" aria-labelledby="dropdown01">
 						{foreach $galaxies as $galaxyId => $galaxy} <a class="dropdown-item" href="index.php?galaxy={$galaxyId}&amp;page={$page}">{$galaxy.name} Galaxie</a> {/foreach}
 					</div></li>
-				<li {if $page== 'systems'}class="nav-item active" {else}class="nav-item"{/if}><a class="nav-link" href="index.php?galaxy={$galaxy}&amp;page=systems">Systeme</span>
+				<li {if $page== 'overview'}class="nav-item active" {else}class="nav-item"{/if}><a class="nav-link" href="index.php?galaxy={$galaxy}&amp;page=overview">Übersicht</span>
 				</a></li>
-				<li {if $page== 'planets'}class="nav-item active" {else}class="nav-item"{/if}><a class="nav-link" href="index.php?galaxy={$galaxy}&amp;page=planets">Planeten</a></li>
+				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dateneingabe</a>
+					<div class="dropdown-menu" aria-labelledby="dropdown01">
+						<a class="dropdown-item" href="index.php?galaxy={$galaxy}&amp;page=systems">Systeme</a> <a class="dropdown-item" href="index.php?galaxy={$galaxy}&amp;page=planets">Planeten</a>
+					</div></li>
 				<li {if $page== 'storage'}class="nav-item active" {else}class="nav-item"{/if}><a class="nav-link" href="index.php?galaxy={$galaxy}&amp;page=storage">Lager</a></li>
 			</ul>
 			<form class="form-inline my-2 my-lg-0">

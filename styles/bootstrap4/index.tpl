@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="icon" href="{$style}/images/favicon.ico">
-<title>Startseite</title>
+<title>NMS Database</title>
 <link href="styles/{$style}/css/bootstrap.min.css" rel="stylesheet">
 <link href="styles/{$style}/css/custom.css" rel="stylesheet">
 <script src="styles/{$style}/js/jquery.min.js"></script>

@@ -122,6 +122,31 @@ class dbOperations {
 				'id' => $systemId
 		) );
 	}
+	public function getSystemResources($systemId) {
+		$fullTable1 = $this->prefix . 'planets';
+		$fullTable2 = $this->prefix . 'commodities';
+		$fullTable3 = $this->prefix . 'planet-resource';
+		$statement = $this->pdo->prepare ( "SELECT `$fullTable2`.*, `$fullTable1`.name AS planetName, $fullTable1.id AS planetId FROM `$fullTable2`, `$fullTable1`, `$fullTable3` WHERE `$fullTable1`.systemId = ? AND `$fullTable1`.id = `$fullTable3`.`planetId` AND `$fullTable2`.id = `$fullTable3`.`commodityId` ORDER BY `$fullTable2`.name");
+		$statement->execute ( array (
+				$systemId
+		) );
+		$resources = array ();
+		if ($statement->rowCount () > 0) {
+			while ( $row = $statement->fetch () ) {
+				$resourceId = $row ['id'];
+				$planetId = $row ['planetId'];
+				$planetName = $row ['planetName'];
+				if (isset ( $resources [$resourceId] )) {
+					$resources [$resourceId] [$planetId] = $planetName;
+				} else {
+					$resources [$resourceId] = array (
+							$planetId => $planetName
+					);
+				}
+			}
+		}
+		return $resources;
+	}
 
 	/*
 	 * ****************************************************************************************************

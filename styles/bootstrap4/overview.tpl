@@ -1,35 +1,69 @@
 <h3>Übersicht</h3>
-<ul class="nav nav-pills nav-stacked">
-  <li class="active"><a href="#">Home</a></li>
-  <li class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu 1
-    <span class="caret"></span></a>
-    <ul class="dropdown-menu">
-      <li><a href="#">Submenu 1-1</a></li>
-      <li><a href="#">Submenu 1-2</a></li>
-      <li><a href="#">Submenu 1-3</a></li>
-    </ul>
-  </li>
-  <li><a href="#">Menu 2</a></li>
-  <li><a href="#">Menu 3</a></li>
-</ul>
 <div class="row">
 	<div class="col-3">
 		<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 			{foreach $systems as $systemId => $system} <a {if $system@first}class="nav-link active" {else}class="nav-link" {/if} id="v-pills-{$systemId}-tab" data-toggle="pill" href="#v-pills-{$systemId}"
-				role="tab" aria-controls="v-pills-{$systemId}">{$system.name}</a>
-			<div class="nav flex-column nav-pills ml-5" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-				<a class="nav-link" id="v-pills-1-tab" data-toggle="pill" href="#v-pills-1"
-				role="tab" aria-controls="v-pills-1">Testplanet</a>
-			</div>
-			{/foreach}
+				role="tab" aria-controls="v-pills-{$systemId}">{$system.name}</a> {/foreach}
 		</div>
 	</div>
 	<div class="col-9">
 		<div class="tab-content" id="v-pills-tabContent">
 			{foreach $systems as $systemId => $system}
-			<div {if $system@first}class="tab-pane fade show active" {else}class="tab-pane fade" {/if} id="v-pills-{$systemId}" role="tabpanel" aria-labelledby="v-pills-{$systemId}-tab">
+			<div {if $system@first}class="tab-pane show active" {else}class="tab-pane fade" {/if} id="v-pills-{$systemId}" role="tabpanel" aria-labelledby="v-pills-{$systemId}-tab">
 				<h3>{$system.name}</h3>
+				<div class="row">
+					<div class="col">
+						<h4>Systemdaten</h4>
+						<div class="row">
+							<div class="col">
+								<section class="clearfix">
+									<img src="styles/{$style}/images/Substance.neutral.common1.png" class="img-fluid float-left mr-3 mb-2" width="56px" height="56px">
+									<p>
+										<span class="text-secondary">Konfliktstufe</span><br> <strong>{if $system.lifeformId!=null}{$lifeform[$system.lifeformId].name}{/if}</strong>
+									</p>
+								</section>
+								<section class="clearfix">
+									<img src="styles/{$style}/images/Substance.neutral.common1.png" class="img-fluid float-left mr-3 mb-2" width="56px" height="56px">
+									<p>
+										<span class="text-secondary">Konfliktstufe</span><br> <strong>{if $system.economyId!=null}{$economy[$system.economyId].name}{/if}{if $system.wealthId!=null} /
+											{$wealth[$system.wealthId].name}{/if}</strong>
+									</p>
+								</section>
+								<section class="clearfix">
+									<img src="styles/{$style}/images/Substance.neutral.common1.png" class="img-fluid float-left mr-3 mb-2" width="56px" height="56px">
+									<p>
+										<span class="text-secondary">Konfliktstufe</span><br> <strong>{if $system.conflictId!=null}{$conflict[$system.conflictId].name}{/if}</strong>
+									</p>
+								</section>
+							</div>
+						</div>
+						<h4>Planeten</h4>
+						<div class="row">
+							<div class="col">
+								{foreach $system.planets as $planetId => $planet}
+								<section class="clearfix">
+									<img src="styles/{$style}/images/Moon_icon.jpg" class="img-fluid float-left mr-3" width="32px" height="32px">
+									<p class="my-1">
+										<strong>{$planet.name}</strong><a class="btn btn-primary btn-sm float-right" href="index.php?galaxy={$galaxy}&amp;page=planets&amp;mode=manage&amp;action=edit&amp;p={$planetId}"
+											role="button">Ansehen</a><!-- btn btn-primary btn-sm  -->
+									</p>
+								</section>
+								{/foreach}
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<h4>Ressourcen</h4>
+						{foreach $system.resources as $commodityId => $planet}
+						<section class="clearfix">
+							<img src="styles/{$style}/images/Substance.neutral.common1.png" class="img-fluid float-left mr-3 mb-2" width="32px" height="32px">
+							<p>
+								<strong>{$resources[$commodityId].name}</strong>
+							</p>
+						</section>
+						{/foreach}
+					</div>
+				</div>
 			</div>
 			{/foreach}
 		</div>

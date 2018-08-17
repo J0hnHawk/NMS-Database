@@ -4,10 +4,19 @@ if (! defined ( 'IN_NMSD' )) {
 }
 
 include ('include/loadTables.php');
-$page = GetParam ( 'page', 'G', 'systems' );
+$page = GetParam ( 'page', 'G', 'overview' );
 switch ($page) {
 	case 'overview' :
 		//include('include/systems.php');
+		$resources = $db->getResources ();
+		$smarty->assign ( 'resources', $resources );
+		foreach($systems as $systemId => $system) {
+			$systems[$systemId]['resources'] = $db->getSystemResources($systemId);
+			$systems[$systemId]['planets'] = $db->getSystemPlanets ( array (
+					$systemId
+			) );
+		}
+		
 		break;
 	case 'systems' :
 		include('include/systems.php');
@@ -18,6 +27,7 @@ switch ($page) {
 	default :
 }
 $smarty->assign ( 'systems', $systems );
+
 $smarty->assign ( 'page', $page );
 
 

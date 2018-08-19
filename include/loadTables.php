@@ -21,3 +21,4 @@ $smarty->assign ( 'weather', $db->getWholeTable ( 'weather' ) );
 $smarty->assign ( 'fauna', $db->getWholeTable ( 'fauna' ) );
 $smarty->assign ( 'flora', $db->getWholeTable ( 'flora' ) );
 $smarty->assign ( 'sentinel', $db->getWholeTable ( 'sentinel' ) );
+$smarty->assign ( 'resources', $db->getWholeTable ( 'resources' ) );

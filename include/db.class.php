@@ -65,7 +65,7 @@ class dbOperations {
 	public function getWholeTable($table) {
 		$fullTable = $this->prefix . $table;
 		$rows = array ();
-		$statement = $this->pdo->prepare ( "SELECT *,IF(german IS NULL or german = '', name, german) as name FROM `$fullTable` ORDER BY name ASC" ); // *,IF(german IS NULL or german = '', name, german) as name
+		$statement = $this->pdo->prepare ( "SELECT * FROM `$fullTable` ORDER BY name ASC" ); // ,IF(german IS NULL or german = '', name, german) as name
 		$statement->execute ();
 		if ($statement->rowCount () > 0) {
 			$rows = $statement->fetchAll ( PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC );
@@ -91,7 +91,7 @@ class dbOperations {
 	 * *** Galaxies
 	 * ****************************************************************************************************
 	 */
-
+	
 	/*
 	 * ****************************************************************************************************
 	 * *** Systems
@@ -147,7 +147,7 @@ class dbOperations {
 		}
 		return $resources;
 	}
-
+	
 	/*
 	 * ****************************************************************************************************
 	 * *** Planets
@@ -167,20 +167,20 @@ class dbOperations {
 		$fullPTable = $this->prefix . 'planets';
 		$fullSTable = $this->prefix . 'systems';
 		$planets = array ();
-		$statement = $this->pdo->prepare ( "SELECT $fullPTable.* FROM $fullSTable, $fullPTable WHERE $fullSTable.galaxyId = ? AND $fullSTable.id = $fullPTable.systemId ORDER BY $fullPTable.name ASC" );
+		$statement = $this->pdo->prepare ( "SELECT $fullPTable.* FROM $fullSTable, $fullPTable WHERE $fullSTable.galaxyId = ? AND $fullSTable.id = $fullPTable.systemId ORDER BY $fullSTable.name ASC, $fullPTable.name ASC" );
 		$statement->execute ( $galaxy );
 		if ($statement->rowCount () > 0) {
 			$planets = $statement->fetchAll ( PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC );
 		}
 		return $planets;
 	}
-
+	
 	/*
 	 * ****************************************************************************************************
 	 * *** Lifeforms
 	 * ****************************************************************************************************
 	 */
-
+	
 	/*
 	 * ****************************************************************************************************
 	 * *** Waren
@@ -189,7 +189,7 @@ class dbOperations {
 	public function getResources() {
 		$fullTable = $this->prefix . 'commodities';
 		$resources = array ();
-		$statement = $this->pdo->prepare ( "SELECT *,IF(german IS NULL or german = '', name, german) as name FROM $fullTable WHERE getableOnPlanet = 1 ORDER BY name ASC" );
+		$statement = $this->pdo->prepare ( "SELECT * FROM $fullTable WHERE getableOnPlanet = 1 ORDER BY name ASC" ); //,IF(german IS NULL or german = '', name, german) as name
 		$statement->execute ();
 		if ($statement->rowCount () > 0) {
 			$resources = $statement->fetchAll ( PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC );
@@ -208,25 +208,25 @@ class dbOperations {
 		}
 		return $resources;
 	}
-
+	
 	/*
 	 * ****************************************************************************************************
 	 * *** Economies
 	 * ****************************************************************************************************
 	 */
-
+	
 	/*
 	 * ****************************************************************************************************
 	 * *** Wealth
 	 * ****************************************************************************************************
 	 */
-
+	
 	/*
 	 * ****************************************************************************************************
 	 * *** Conflict Level
 	 * ****************************************************************************************************
 	 */
-
+	
 	/*
 	 * ****************************************************************************************************
 	 * *** Configdatenbank

@@ -35,7 +35,7 @@
 	</div>
 	{if $action=='edit'}
 	<table class="table table-hover table-sm">
-		<thead class="thead-light">
+		<thead class="thead-dark">
 			<tr>
 				<th colspan="2" scope="col">Planet / Mond</th>
 				<th scope="col">Biom</th>
@@ -101,7 +101,7 @@
 </form>
 {else}
 <table class="table table-hover table-sm">
-	<thead class="thead-light">
+	<thead class="thead-dark">
 		<tr>
 			<th scope="col">System</th>
 			<th scope="col">Fraktion</th>

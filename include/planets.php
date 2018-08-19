@@ -1,8 +1,8 @@
 <?php
 $planets = $db->getGalaxyPlanets ( array (
-		$galaxy
+		$galaxy 
 ) );
-$resources = $db->getResources ();
+$commodities = $db->getResources ();
 $mode = GetParam ( 'mode', 'G', 'manage' );
 $action = GetParam ( 'action', 'G', '' );
 switch ($action) {
@@ -23,7 +23,7 @@ switch ($action) {
 						'floraId' => array (),
 						'faunaId' => array (),
 						'notes' => '',
-						'resources' => array ()
+						'commodities' => array () 
 				) );
 				$smarty->assign ( 'action', 'add' );
 				$smarty->assign ( 'planetEdit', true );
@@ -38,7 +38,7 @@ switch ($action) {
 			if ($systemId) {
 				$dataFields = array (
 						'name' => GetParam ( 'name', 'P' ),
-						'systemId' => $systemId
+						'systemId' => $systemId 
 				);
 				$formFields = array (
 						'planetMoonId',
@@ -46,22 +46,24 @@ switch ($action) {
 						'galacticAdress',
 						'biomeId',
 						'weatherId',
+						'resourcesId',
 						'sentinelId',
 						'floraId',
 						'faunaId',
-						'notes'
+						'notes' 
 				);
 				foreach ( $formFields as $formField ) {
-					if (GetParam ( $formField, 'P' )) {
+					$value = GetParam ( $formField, 'P' );
+					if ($value) {
 						$dataFields += array (
-								$formField => GetParam ( $formField, 'P' )
+								$formField => ($value == 'null') ? NULL : GetParam ( $formField, 'P' ) 
 						);
 					}
 				}
 				$updateResource = false;
 				if ($planetId) {
 					if ($db->update ( 'planets', $dataFields, array (
-							'id' => $planetId
+							'id' => $planetId 
 					) )) {
 						$updateResource = true;
 					}
@@ -73,19 +75,21 @@ switch ($action) {
 				}
 				if ($updateResource) {
 					$db->delete ( 'planet-resource', array (
-							'planetId' => $planetId
+							'planetId' => $planetId 
 					) );
-					foreach ( $_POST ['resource'] as $commodityId ) {
-						if (isset ( $resources [$commodityId] )) {
-							$db->insert ( 'planet-resource', array (
-									'planetId' => $planetId,
-									'commodityId' => $commodityId
-							) );
+					if (isset ( $_POST ['commodity'] )) {
+						foreach ( $_POST ['commodity'] as $commodityId ) {
+							if (isset ( $commodities [$commodityId] )) {
+								$db->insert ( 'planet-resource', array (
+										'planetId' => $planetId,
+										'commodityId' => $commodityId 
+								) );
+							}
 						}
 					}
 				}
 				$planets = $db->getGalaxyPlanets ( array (
-						$galaxy
+						$galaxy 
 				) );
 			}
 			$smarty->assign ( 'action', '' );
@@ -94,11 +98,11 @@ switch ($action) {
 			$planetId = GetParam ( 'p', 'G' );
 			if (isset ( $planets [$planetId] )) {
 				$planets = $db->getSystemPlanets ( array (
-						$planets [$planetId] ['systemId']
+						$planets [$planetId] ['systemId'] 
 				) );
 				$planet = $planets [$planetId];
 				$planet ['id'] = $planetId;
-				$planet ['resources'] = $db->getPlanetResources ( $planetId );
+				$planet ['commodities'] = $db->getPlanetResources ( $planetId );
 				$smarty->assign ( 'planet', $planet );
 				$smarty->assign ( 'action', 'edit' );
 				$smarty->assign ( 'planetEdit', true );
@@ -110,4 +114,4 @@ switch ($action) {
 	default :
 }
 $smarty->assign ( 'planets', $planets );
-$smarty->assign ( 'resources', $resources );
+$smarty->assign ( 'commodities', $commodities );

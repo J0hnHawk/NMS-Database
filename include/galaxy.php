@@ -16,7 +16,7 @@ switch ($page) {
 					$systemId
 			) );
 		}
-		
+		//var_dump($systems);
 		break;
 	case 'systems' :
 		include('include/systems.php');

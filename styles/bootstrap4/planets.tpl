@@ -4,11 +4,12 @@
 	<input type="hidden" name="planetId" value="{$planet.id}">
 	<div class="form-row">
 		<div class="form-group col">
-			<label for="name">Name des Planeten oder Mondes</label> <input type="text" name="name" id="name" class="form-control" placeholder="Name des Planeten" value="{$planet.name}">
+			<label for="name">Name des Planeten oder Mondes</label> <input type="text" name="name" id="name" class="form-control"
+				placeholder="Name des Planeten" value="{$planet.name}">
 		</div>
 		<div class="form-group col">
 			<label for="name">Wenn Mond, Planet des Mondes</label> <select name="planetMoonId" id="inputState" class="form-control">
-				<option value="" selected>ist kein Mond</option> {foreach $planets as $planetId => $planetRow}
+				<option value="null" selected>ist kein Mond</option> {foreach $planets as $planetId => $planetRow}
 				<option value="{$planetId}" {if $planet.planetMoonId==$planetId}selected{/if}>{$planetRow.name}</option> {/foreach}
 			</select>
 		</div>
@@ -21,15 +22,16 @@
 			</select>
 		</div>
 		<div class="form-group col-md-3">
-			<label for="portalCode">Portalcode</label><input type="text" name="portalCode" id="portalCode" class="form-control" placeholder="Portalcode" value="{$planet.portalCode}">
+			<label for="portalCode">Portalcode</label><input type="text" name="portalCode" id="portalCode" class="form-control" placeholder="Portalcode"
+				value="{$planet.portalCode}">
 		</div>
 		<div class="form-group col-md-3">
-			<label for="portalCode">Galaktische Adresse</label><input type="text" name="galacticAdress" id="galacticAdress" class="form-control" placeholder="0000:0000:0000:0000"
-				value="{$planet.galacticAdress}">
+			<label for="portalCode">Galaktische Adresse</label><input type="text" name="galacticAdress" id="galacticAdress" class="form-control"
+				placeholder="0000:0000:0000:0000" value="{$planet.galacticAdress}">
 		</div>
 	</div>
 	<div class="form-row">
-		<div class="col-5">
+		<div class="col-6">
 			<div class="form-row">
 				<div class="form-group col">
 					<label for="inputCity">Biom</label> <select name="biomeId" id="inputState" class="form-control">
@@ -37,16 +39,20 @@
 						<option value="{$biomeId}" {if $planet.biomeId==$biomeId}selected{/if}>{$biomeRow.name}</option> {/foreach}
 					</select>
 				</div>
-			</div>
-			<div class="form-row">
 				<div class="form-group col">
-					<label for="inputCity">Wetter</label> <select name="weatherID" id="inputState" class="form-control">
+					<label for="inputCity">Wetter</label> <select name="weatherId" id="inputState" class="form-control">
 						<option value="" selected>Option auswählen</option> {foreach $weather as $weatherId => $weatherRow}
 						<option value="{$weatherId}" {if $planet.weatherId==$weatherId}selected{/if}>{$weatherRow.name}</option> {/foreach}
 					</select>
 				</div>
 			</div>
 			<div class="form-row">
+				<div class="form-group col">
+					<label for="inputCity">Rohstoffe</label> <select name="resourcesId" id="inputState" class="form-control">
+						<option value="" selected>Option auswählen</option> {foreach $resources as $resourcesId => $resourcesRow}
+						<option value="{$resourcesId}" {if $planet.resourcesId==$resourcesId}selected{/if}>{$resourcesRow.name}</option> {/foreach}
+					</select>
+				</div>
 				<div class="form-group col">
 					<label for="inputCity">Wächter</label> <select name="sentinelId" id="inputState" class="form-control">
 						<option value="" selected>Option auswählen</option> {foreach $sentinel as $sentinelId => $sentinelRow}
@@ -61,8 +67,6 @@
 						<option value="{$floraId}" {if $planet.floraId==$floraId}selected{/if}>{$floraRow.name}</option> {/foreach}
 					</select>
 				</div>
-			</div>
-			<div class="form-row">
 				<div class="form-group col">
 					<label for="inputCity">Fauna</label> <select name="faunaId" id="inputState" class="form-control">
 						<option value="" selected>Option auswählen</option> {foreach $fauna as $faunaId => $faunaRow}
@@ -74,25 +78,26 @@
 		<div class="col-4 offset-1">
 			<div class="form-row">
 				<div class="form-group col">
-					<input type="hidden" name="count" value="{$planet.resources|@count+1}"> <label for="resources">Rohstoffe</label> {foreach $planet.resources as $planetResource}
-					<div id="resource{$planetResource@iteration}" class="input-group">
-						<select class="form-control {if !$planetResource@first}mt-3{/if}" name="resource[]" id="resources">
-							<option value="" selected>Option auswählen</option>{foreach $resources as $resourcesId => $resourcesRow}
-							<option value="{$resourcesId}" {if $planetResource.commodityId==$resourcesId}selected{/if}>{$resourcesRow.name}</option> {/foreach}
+					<input type="hidden" name="count" value="{$planet.commodities|@count+1}"> <label for="commodities">Rohstoffe</label> {foreach $planet.commodities
+					as $planetCommodity}
+					<div id="commodity{$planetCommodity@iteration}" class="input-group">
+						<select class="form-control {if !$planetCommodity@first}mt-3{/if}" name="commodity[]" id="commodity">
+							<option value="" selected>Option auswählen</option>{foreach $commodities as $commodityId => $commodityRow}
+							<option value="{$commodityId}" {if $planetCommodity.commodityId==$commodityId}selected{/if}>{$commodityRow.name}</option> {/foreach}
 						</select>
 						<div class="input-group-append">
-							{if $planetResource@first}
+							{if $planetCommodity@first}
 							<button id="add" class="btn btn-secondary" style="width: 40px">+</button>
 							{else}
-							<button onclick="$('#resource' + {$planetResource@iteration}).remove()" class="btn btn-danger remove-me mt-3" style="width: 40px">-</button>
+							<button onclick="$('#commodity' + {$planetCommodity@iteration}).remove()" class="btn btn-danger remove-me mt-3" style="width: 40px">-</button>
 							{/if}
 						</div>
 					</div>
 					{foreachelse}
-					<div id="resource1" class="input-group">
-						<select class="form-control" name="resource[]" id="resources">
-							<option value="" selected>Option auswählen</option> {foreach $resources as $resourcesId => $resourcesRow}
-							<option value="{$resourcesId}">{$resourcesRow.name}</option> {/foreach}
+					<div id="commodity1" class="input-group">
+						<select class="form-control" name="commodity[]" id="commodity">
+							<option value="" selected>Option auswählen</option> {foreach $commodities as $commodityId => $commodityRow}
+							<option value="{$commodityId}">{$commodityRow.name}</option> {/foreach}
 						</select>
 						<div class="input-group-append">
 							<button id="add" class="btn btn-secondary" style="width: 40px">+</button>
@@ -103,19 +108,19 @@
 			</div>
 			<script type="text/javascript">
 				$(document).ready(function(){
-	    			var next = {$planet.resources|@count +1};
+	    			var next = {$planet.commodities|@count +1};
 	    			$("#add").click(function(e){
 	        			e.preventDefault();
-	        			var newResource = "#resource" + next;
+	        			var newResource = "#commodity" + next;
 	        			next = next + 1;
-	        			var append = '<div id="resource' + next + '" class="input-group"><select class="form-control mt-3" name="resource[]" id="resources"><option value="" selected>Option auswählen</option> {foreach $resources as $resourcesId => $resourcesRow}<option value="{$resourcesId}">{$resourcesRow.name}</option> {/foreach}</select><div class="input-group-append"><button id="r' + (next - 1) + '" class="btn btn-danger remove-me mt-3" style="width: 40px">-</button></div></div>';
+	        			var append = '<div id="commodity' + next + '" class="input-group"><select class="form-control mt-3" name="commodity[]" id="commodity"><option value="" selected>Option auswählen</option> {foreach $commodities as $commodityId => $commodityRow}<option value="{$commodityId}">{$commodityRow.name}</option> {/foreach}</select><div class="input-group-append"><button id="r' + (next - 1) + '" class="btn btn-danger remove-me mt-3" style="width: 40px">-</button></div></div>';
 	        			$("#addbefore").before(append);
 	        			//$("#resource" + next).attr('data-source',$(newResource).attr('data-source'));
 	        			$("#count").val(next);	        
 		    			$('.remove-me').click(function(e){
 	                		e.preventDefault();
 	                		var fieldNum = parseInt(this.id.substr(1))+1 ;
-	                		var fieldID = "#resource" + fieldNum ;
+	                		var fieldID = "#commodity" + fieldNum ;
 	                		$(fieldID).remove();
 	            		});   
 	    			});	
@@ -132,14 +137,16 @@
 </form>
 {else}
 <table class="table table-hover table-sm">
-	<thead class="thead-light">
+	<thead class="thead-dark">
 		<tr>
 			<th scope="col">Planet / Mond</th>
 			<th scope="col">System</th>
-			<th scope="col">Biom</th>
+			<!-- <th scope="col">Biom</th> -->
 			<th scope="col">Wetter</th>
 			<th scope="col">Wächter</th>
-			<th scope="col">Notizen</th>
+			<th scope="col">Flora</th>
+			<th scope="col">Fauna</th>
+			<!-- <th scope="col">Notizen</th> -->
 			<th scope="col">&nbsp;</th>
 		</tr>
 	</thead>
@@ -148,18 +155,23 @@
 		<tr>
 			<th>{$planet.name}</th>
 			<td>{$systems[$planet.systemId].name}</td>
-			<td>{$planet.biomeId}</td>
-			<td>{$planet.weatherId}</td>
-			<td>{$planet.sentinelId}</td>
-			<td>{$planet.notes|truncate}</td>
-			<td class="text-nowrap"><a class="btn btn-primary btn-sm" href="index.php?galaxy={$galaxy}&amp;page=planets&amp;mode=manage&amp;action=edit&amp;p={$planetId}" role="button">Bearbeiten</a>
-				<button type="button" class="btn btn-danger btn-sm ml-1" data-toggle="modal" data-target="#deleteSystem" data-id="{$planetId}" data-name="{$planet.name}">Löschen</button></td>
+			<!-- <td>{$planet.biomeId}</td> -->
+			<td>{if $planet.weatherId!=null}{$weather[$planet.weatherId].name}{/if}</td>
+			<td>{if $planet.sentinelId!=null}{$sentinel[$planet.sentinelId].name}{/if}</td>
+			<td>{if $planet.floraId!=null}{$flora[$planet.floraId].name}{/if}</td>
+			<td>{if $planet.faunaId!=null}{$fauna[$planet.faunaId].name}{/if}</td>
+			<!-- <td>{$planet.notes|truncate}</td> -->
+			<td class="text-nowrap"><a class="btn btn-primary btn-sm"
+				href="index.php?galaxy={$galaxy}&amp;page=planets&amp;mode=manage&amp;action=edit&amp;p={$planetId}" role="button">Bearbeiten</a>
+				<button type="button" class="btn btn-danger btn-sm ml-1" data-toggle="modal" data-target="#deleteSystem" data-id="{$planetId}"
+					data-name="{$planet.name}">Löschen</button></td>
 		</tr>
 		{/foreach}
 	</tbody>
 </table>
 <form class="form-inline float-right" method="POST" action="index.php?galaxy={$galaxy}&amp;page=planets&amp;mode=manage&amp;action=add">
-	<label class="mr-2" for="newSystem">Neuen Planeten hinzufügen</label> <input type="text" class="form-control mr-sm-2" name="newPlanet" placeholder="Name des Planeten">
+	<label class="mr-2" for="newSystem">Neuen Planeten hinzufügen</label> <input type="text" class="form-control mr-sm-2" name="newPlanet"
+		placeholder="Name des Planeten">
 	<button type="submit" class="btn btn-primary">Absenden</button>
 </form>
 {/if}

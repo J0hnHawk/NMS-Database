@@ -4,8 +4,7 @@
 	<input type="hidden" name="planetId" value="{$planet.id}">
 	<div class="form-row">
 		<div class="form-group col">
-			<label for="name">Name des Planeten oder Mondes</label> <input type="text" name="name" id="name" class="form-control"
-				placeholder="Name des Planeten" value="{$planet.name}">
+			<label for="name">Name des Planeten oder Mondes</label> <input type="text" name="name" id="name" class="form-control" placeholder="Name des Planeten" value="{$planet.name}">
 		</div>
 		<div class="form-group col">
 			<label for="name">Wenn Mond, Planet des Mondes</label> <select name="planetMoonId" id="inputState" class="form-control">
@@ -22,12 +21,11 @@
 			</select>
 		</div>
 		<div class="form-group col-md-3">
-			<label for="portalCode">Portalcode</label><input type="text" name="portalCode" id="portalCode" class="form-control" placeholder="Portalcode"
-				value="{$planet.portalCode}">
+			<label for="portalCode">Portalcode</label><input type="text" name="portalCode" id="portalCode" class="form-control" placeholder="Portalcode" value="{$planet.portalCode}">
 		</div>
 		<div class="form-group col-md-3">
-			<label for="portalCode">Galaktische Adresse</label><input type="text" name="galacticAdress" id="galacticAdress" class="form-control"
-				placeholder="0000:0000:0000:0000" value="{$planet.galacticAdress}">
+			<label for="portalCode">Galaktische Adresse</label><input type="text" name="galacticAdress" id="galacticAdress" class="form-control" placeholder="0000:0000:0000:0000"
+				value="{$planet.galacticAdress}">
 		</div>
 	</div>
 	<div class="form-row">
@@ -78,8 +76,7 @@
 		<div class="col-4 offset-1">
 			<div class="form-row">
 				<div class="form-group col">
-					<input type="hidden" name="count" value="{$planet.commodities|@count+1}"> <label for="commodities">Rohstoffe</label> {foreach $planet.commodities
-					as $planetCommodity}
+					<input type="hidden" name="count" value="{$planet.commodities|@count+1}"> <label for="commodities">Rohstoffe</label> {foreach $planet.commodities as $planetCommodity}
 					<div id="commodity{$planetCommodity@iteration}" class="input-group">
 						<select class="form-control {if !$planetCommodity@first}mt-3{/if}" name="commodity[]" id="commodity">
 							<option value="" selected>Option auswählen</option>{foreach $commodities as $commodityId => $commodityRow}
@@ -136,42 +133,52 @@
 	<button type="reset" class="btn btn-secondary">Zurücksetzen</button>
 </form>
 {else}
-<table class="table table-hover table-sm">
+<table id="table_planets" class="table table-hover table-sm">
 	<thead class="thead-dark">
 		<tr>
 			<th scope="col">Planet / Mond</th>
 			<th scope="col">System</th>
-			<!-- <th scope="col">Biom</th> -->
+			<th scope="col">Biom</th>
 			<th scope="col">Wetter</th>
 			<th scope="col">Wächter</th>
 			<th scope="col">Flora</th>
 			<th scope="col">Fauna</th>
-			<!-- <th scope="col">Notizen</th> -->
+			<th scope="col">Notizen</th>
 			<th scope="col">&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody>
 		{foreach $planets as $planetId => $planet}
 		<tr>
-			<th>{$planet.name}</th>
-			<td>{$systems[$planet.systemId].name}</td>
-			<!-- <td>{$planet.biomeId}</td> -->
-			<td>{if $planet.weatherId!=null}{$weather[$planet.weatherId].name}{/if}</td>
-			<td>{if $planet.sentinelId!=null}{$sentinel[$planet.sentinelId].name}{/if}</td>
-			<td>{if $planet.floraId!=null}{$flora[$planet.floraId].name}{/if}</td>
-			<td>{if $planet.faunaId!=null}{$fauna[$planet.faunaId].name}{/if}</td>
-			<!-- <td>{$planet.notes|truncate}</td> -->
-			<td class="text-nowrap"><a class="btn btn-primary btn-sm"
-				href="index.php?galaxy={$galaxy}&amp;page=planets&amp;mode=manage&amp;action=edit&amp;p={$planetId}" role="button">Bearbeiten</a>
-				<button type="button" class="btn btn-danger btn-sm ml-1" data-toggle="modal" data-target="#deleteSystem" data-id="{$planetId}"
-					data-name="{$planet.name}">Löschen</button></td>
+			<th class="text-nowrap">{$planet.name}</th>
+			<td class="text-nowrap">{$systems[$planet.systemId].name}</td>
+			<td class="text-nowrap">{if $planet.biomeId!=null}{$biomes[$planet.biomeId].name}{/if}</td>
+			<td class="text-nowrap">{if $planet.weatherId!=null}{$weather[$planet.weatherId].name}{/if}</td>
+			<td class="text-nowrap">{if $planet.sentinelId!=null}{$sentinel[$planet.sentinelId].name}{/if}</td>
+			<td class="text-nowrap">{if $planet.floraId!=null}{$flora[$planet.floraId].name}{/if}</td>
+			<td class="text-nowrap">{if $planet.faunaId!=null}{$fauna[$planet.faunaId].name}{/if}</td>
+			<td class="text-nowrap">{$planet.notes|truncate}</td>
+			<td class="text-nowrap"><a class="btn btn-primary btn-sm" href="index.php?galaxy={$galaxy}&amp;page=planets&amp;mode=manage&amp;action=edit&amp;p={$planetId}" role="button">Bearbeiten</a>
+				<button type="button" class="btn btn-danger btn-sm ml-1" data-toggle="modal" data-target="#deleteSystem" data-id="{$planetId}" data-name="{$planet.name}">Löschen</button></td>
 		</tr>
 		{/foreach}
 	</tbody>
 </table>
+<script>
+	{literal}
+	var rows = parseInt(($( window ).height() - 210) / 46)
+	$(document).ready( function () {
+    	$('#table_planets').DataTable({
+    		"pageLength": rows,
+    		language: {
+		        url: './styles/bootstrap4/js/German.json'
+		    }
+    	});
+	} );
+	{/literal}
+</script>
 <form class="form-inline float-right" method="POST" action="index.php?galaxy={$galaxy}&amp;page=planets&amp;mode=manage&amp;action=add">
-	<label class="mr-2" for="newSystem">Neuen Planeten hinzufügen</label> <input type="text" class="form-control mr-sm-2" name="newPlanet"
-		placeholder="Name des Planeten">
+	<label class="mr-2" for="newSystem">Neuen Planeten hinzufügen</label> <input type="text" class="form-control mr-sm-2" name="newPlanet" placeholder="Name des Planeten">
 	<button type="submit" class="btn btn-primary">Absenden</button>
 </form>
 {/if}

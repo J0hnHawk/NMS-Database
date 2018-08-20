@@ -9,6 +9,9 @@
 <link href="styles/{$style}/css/custom.css" rel="stylesheet">
 <script src="styles/{$style}/js/jquery.min.js"></script>
 <script src="styles/{$style}/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/{$style}/css/datatables.min.css"/>
+<script type="text/javascript" src="styles/{$style}/js/datatables.min.js"></script>
+<script type="text/javascript" src="styles/{$style}/js/datatables.pageResize.min.js"></script>
 <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous"> -->
 </head>
 <body>

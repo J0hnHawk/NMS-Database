@@ -65,7 +65,7 @@ class dbOperations {
 	public function getWholeTable($table) {
 		$fullTable = $this->prefix . $table;
 		$rows = array ();
-		$statement = $this->pdo->prepare ( "SELECT * FROM `$fullTable` ORDER BY name ASC" ); // ,IF(german IS NULL or german = '', name, german) as name
+		$statement = $this->pdo->prepare ( "SELECT *,IF(german IS NULL or german = '', name, german) as name FROM `$fullTable` ORDER BY name ASC" ); // ,IF(german IS NULL or german = '', name, german) as name
 		$statement->execute ();
 		if ($statement->rowCount () > 0) {
 			$rows = $statement->fetchAll ( PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC );
@@ -189,7 +189,7 @@ class dbOperations {
 	public function getResources() {
 		$fullTable = $this->prefix . 'commodities';
 		$resources = array ();
-		$statement = $this->pdo->prepare ( "SELECT * FROM $fullTable WHERE getableOnPlanet = 1 ORDER BY name ASC" ); //,IF(german IS NULL or german = '', name, german) as name
+		$statement = $this->pdo->prepare ( "SELECT *,IF(german IS NULL or german = '', name, german) as name FROM $fullTable WHERE getableOnPlanet = 1 ORDER BY name ASC" ); //,IF(german IS NULL or german = '', name, german) as name
 		$statement->execute ();
 		if ($statement->rowCount () > 0) {
 			$resources = $statement->fetchAll ( PDO::FETCH_UNIQUE | PDO::FETCH_ASSOC );

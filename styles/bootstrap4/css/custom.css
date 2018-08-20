@@ -15,3 +15,7 @@ body {
 .form-control {
 	/*font-weight: bold;*/
 }
+.anyClass {
+  height:50%;
+  overflow-y: scroll;
+}

@@ -100,7 +100,7 @@
 	<button type="reset" class="btn btn-secondary">Zurücksetzen</button>
 </form>
 {else}
-<table class="table table-hover table-sm">
+<table id="table_systems" class="table table-hover table-sm">
 	<thead class="thead-dark">
 		<tr>
 			<th scope="col">System</th>
@@ -125,7 +125,19 @@
 		{/foreach}
 	</tbody>
 </table>
-<form class="form-inline float-right" method="POST" action="index.php?galaxy={$galaxy}&amp;page=systems&amp;mode=manage&amp;action=add">
+<script>
+	{literal}
+	var rows = parseInt(($( window ).height() - 210) / 46)
+	$(document).ready( function () {
+    	$('#table_systems').DataTable({
+    		"pageLength": rows,
+    		language: {
+		        url: './styles/bootstrap4/js/German.json'
+		    }
+    	});
+	} );
+	{/literal}
+</script><form class="form-inline float-right" method="POST" action="index.php?galaxy={$galaxy}&amp;page=systems&amp;mode=manage&amp;action=add">
 	<label class="mr-2" for="newSystem">Neues System hinzufügen</label> <input type="text" class="form-control mr-sm-2" name="newSystem" id="newSystem" placeholder="Name des Systems">
 	<button type="submit" class="btn btn-primary">Absenden</button>
 </form>

@@ -100,7 +100,7 @@ class dbOperations {
 	public function getSystems($galaxy) {
 		$fullTable = $this->prefix . 'systems';
 		$systems = array ();
-		$statement = $this->pdo->prepare ( "SELECT * FROM $fullTable WHERE galaxyId = ? ORDER BY name ASC" );
+		$statement = $this->pdo->prepare ( "SELECT * FROM $fullTable WHERE galaxyId = ? ORDER BY isFavourite DESC, name ASC" );
 		$statement->execute ( array (
 				$galaxy
 		) );

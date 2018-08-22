@@ -3,7 +3,7 @@
 		<h3>Systeme</h3>
 		<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="display: block; overflow-y: scroll;">
 			{foreach $systems as $systemId => $system} <a {if $system@first}class="nav-link active" {else}class="nav-link" {/if} id="v-pills-{$systemId}-tab" data-toggle="pill" href="#v-pills-{$systemId}"
-				role="tab" aria-controls="v-pills-{$systemId}">{$system.name}</a> {/foreach}
+				role="tab" aria-controls="v-pills-{$systemId}">{$system.name}{if $system.isFavourite}<span class="float-right"> &#9733;</span>{/if}</a> {/foreach}
 		</div>
 		<script>$('#v-pills-tab a').on('click', function (e) {
 			  e.preventDefault()

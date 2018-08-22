@@ -4,7 +4,8 @@
 	<input type="hidden" name="systemId" value="{$system.id}"><input type="hidden" name="galaxyId" value="{$system.galaxyId}">
 	<div class="form-row">
 		<div class="form-group col-6">
-			<label for="inputEmail4">Name des Systems</label> <input type="text" name="name" class="form-control" id="inputEmail4" placeholder="Name des Systems" value="{$system.name}">
+			<label for="inputEmail4">Name des Systems</label> <input type="text" name="name" class="form-control" id="inputEmail4"
+				placeholder="Name des Systems" value="{$system.name}">
 		</div>
 		<div class="form-group col-4 ml-auto">
 			<label for="inputPassword4">Dominate Lebensform</label><select name="lifeformId" id="inputState" class="form-control">
@@ -112,16 +113,24 @@
 		</tr>
 	</thead>
 	<tbody>
-		{$wealthClass[1]='class="text-danger"'}{$wealthClass[2]='class="text-warning"'}{$wealthClass[3]='class="text-success"'}
-		{foreach $systems as $systemId => $system}
+		{$wealthClass[1]='class="text-danger"'}{$wealthClass[2]='class="text-warning"'}{$wealthClass[3]='class="text-success"'} {foreach $systems as
+		$systemId => $system}
 		<tr>
 			<th>{$system.name}</th>
 			<td>{if $system.lifeformId!=null}{$lifeform[$system.lifeformId].name}{/if}</td>
-			<td {if $system.wealthId!=null}{$wealthClass[$wealth[$system.wealthId].wealth]}{/if}>{if $system.economyId!=null}{$economy[$system.economyId].name}{/if}</td>
-			<td {if $system.wealthId!=null}{$wealthClass[$wealth[$system.wealthId].wealth]} data-order="{$wealth[$system.wealthId].wealth}{$wealth[$system.wealthId].name}"{/if}>{if $system.wealthId!=null}{$wealth[$system.wealthId].name}{/if}</td>
+			<td {if $system.wealthId!=null}{$wealthClass[$wealth[$system.wealthId].wealth]}{/if}{if $system.economyId!=null}
+				data-order="{$economy[$system.economyId].type}{$economy[$system.economyId].name}"{/if}>{if $system.economyId!=null}<img
+				src="styles/{$style}/images/economy/{$economy[$system.economyId].type}.png" onerror="this.src='styles/{$style}/images/imgNotFound.png'"
+				class="mr-3" width="20px" height="20px">{$economy[$system.economyId].name}{/if}
+			</td>
+			<td {if $system.wealthId!=null}{$wealthClass[$wealth[$system.wealthId].wealth]}
+				data-order="{$wealth[$system.wealthId].wealth}{$wealth[$system.wealthId].name}"{/if}>{if
+				$system.wealthId!=null}{$wealth[$system.wealthId].name}{/if}</td>
 			<td>{if $system.conflictId!=null}{$conflict[$system.conflictId].name}{/if}</td>
-			<td class="text-nowrap"><a class="btn btn-primary btn-sm" href="index.php?galaxy={$galaxy}&amp;page=systems&amp;mode=manage&amp;action=edit&amp;s={$systemId}" role="button">Bearbeiten</a>
-				<button type="button" class="btn btn-danger btn-sm ml-1" data-toggle="modal" data-target="#deleteSystem" data-id="{$systemId}" data-name="{$system.name}">Löschen</button></td>
+			<td class="text-nowrap"><a class="btn btn-primary btn-sm"
+				href="index.php?galaxy={$galaxy}&amp;page=systems&amp;mode=manage&amp;action=edit&amp;s={$systemId}" role="button">Bearbeiten</a>
+				<button type="button" class="btn btn-danger btn-sm ml-1" data-toggle="modal" data-target="#deleteSystem" data-id="{$systemId}"
+					data-name="{$system.name}">Löschen</button></td>
 		</tr>
 		{/foreach}
 	</tbody>
@@ -132,14 +141,17 @@
 	$(document).ready( function () {
     	$('#table_systems').DataTable({
     		"pageLength": rows,
+    		"dom": "ftp",
     		language: {
 		        url: './styles/bootstrap4/js/German.json'
 		    }
     	});
 	} );
 	{/literal}
-</script><form class="form-inline float-right" method="POST" action="index.php?galaxy={$galaxy}&amp;page=systems&amp;mode=manage&amp;action=add">
-	<label class="mr-2" for="newSystem">Neues System hinzufügen</label> <input type="text" class="form-control mr-sm-2" name="newSystem" id="newSystem" placeholder="Name des Systems">
+</script>
+<form class="form-inline float-right" method="POST" action="index.php?galaxy={$galaxy}&amp;page=systems&amp;mode=manage&amp;action=add">
+	<label class="mr-2" for="newSystem">Neues System hinzufügen</label> <input type="text" class="form-control mr-sm-2" name="newSystem" id="newSystem"
+		placeholder="Name des Systems">
 	<button type="submit" class="btn btn-primary">Absenden</button>
 </form>
 <!-- Modal -->

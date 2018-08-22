@@ -112,12 +112,13 @@
 		</tr>
 	</thead>
 	<tbody>
+		{$wealthClass[1]='class="text-danger"'}{$wealthClass[2]='class="text-warning"'}{$wealthClass[3]='class="text-success"'}
 		{foreach $systems as $systemId => $system}
 		<tr>
 			<th>{$system.name}</th>
 			<td>{if $system.lifeformId!=null}{$lifeform[$system.lifeformId].name}{/if}</td>
-			<td>{if $system.economyId!=null}{$economy[$system.economyId].name}{/if}</td>
-			<td>{if $system.wealthId!=null}{$wealth[$system.wealthId].name}{/if}</td>
+			<td {if $system.wealthId!=null}{$wealthClass[$wealth[$system.wealthId].wealth]}{/if}>{if $system.economyId!=null}{$economy[$system.economyId].name}{/if}</td>
+			<td {if $system.wealthId!=null}{$wealthClass[$wealth[$system.wealthId].wealth]} data-order="{$wealth[$system.wealthId].wealth}{$wealth[$system.wealthId].name}"{/if}>{if $system.wealthId!=null}{$wealth[$system.wealthId].name}{/if}</td>
 			<td>{if $system.conflictId!=null}{$conflict[$system.conflictId].name}{/if}</td>
 			<td class="text-nowrap"><a class="btn btn-primary btn-sm" href="index.php?galaxy={$galaxy}&amp;page=systems&amp;mode=manage&amp;action=edit&amp;s={$systemId}" role="button">Bearbeiten</a>
 				<button type="button" class="btn btn-danger btn-sm ml-1" data-toggle="modal" data-target="#deleteSystem" data-id="{$systemId}" data-name="{$system.name}">Löschen</button></td>

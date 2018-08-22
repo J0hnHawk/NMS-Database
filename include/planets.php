@@ -1,6 +1,6 @@
 <?php
 $planets = $db->getGalaxyPlanets ( array (
-		$galaxy 
+		$galaxy
 ) );
 $commodities = $db->getResources ();
 $mode = GetParam ( 'mode', 'G', 'manage' );
@@ -23,7 +23,7 @@ switch ($action) {
 						'floraId' => array (),
 						'faunaId' => array (),
 						'notes' => '',
-						'commodities' => array () 
+						'commodities' => array ()
 				) );
 				$smarty->assign ( 'action', 'add' );
 				$smarty->assign ( 'planetEdit', true );
@@ -38,7 +38,7 @@ switch ($action) {
 			if ($systemId) {
 				$dataFields = array (
 						'name' => GetParam ( 'name', 'P' ),
-						'systemId' => $systemId 
+						'systemId' => $systemId
 				);
 				$formFields = array (
 						'planetMoonId',
@@ -50,20 +50,20 @@ switch ($action) {
 						'sentinelId',
 						'floraId',
 						'faunaId',
-						'notes' 
+						'notes'
 				);
 				foreach ( $formFields as $formField ) {
 					$value = GetParam ( $formField, 'P' );
 					if ($value) {
 						$dataFields += array (
-								$formField => ($value == 'null') ? NULL : GetParam ( $formField, 'P' ) 
+								$formField => ($value == 'null') ? NULL : GetParam ( $formField, 'P' )
 						);
 					}
 				}
 				$updateResource = false;
 				if ($planetId) {
 					if ($db->update ( 'planets', $dataFields, array (
-							'id' => $planetId 
+							'id' => $planetId
 					) )) {
 						$updateResource = true;
 					}
@@ -75,21 +75,24 @@ switch ($action) {
 				}
 				if ($updateResource) {
 					$db->delete ( 'planet-resource', array (
-							'planetId' => $planetId 
+							'planetId' => $planetId
 					) );
 					if (isset ( $_POST ['commodity'] )) {
 						foreach ( $_POST ['commodity'] as $commodityId ) {
 							if (isset ( $commodities [$commodityId] )) {
 								$db->insert ( 'planet-resource', array (
 										'planetId' => $planetId,
-										'commodityId' => $commodityId 
+										'commodityId' => $commodityId
 								) );
 							}
 						}
 					}
 				}
+				$target = $_SERVER ['REQUEST_SCHEME'] . '://' . $_SERVER ['HTTP_HOST'] . rtrim ( dirname ( $_SERVER ['SCRIPT_NAME'] ), '/' ) . "/index.php?galaxy=$galaxy&page=planets&lastPlanet={$dataFields['name']}";
+				header ( 'Location: ' . $target, true, $_SERVER ['SERVER_PROTOCOL'] == 'HTTP/1.1' ? 303 : 302 );
+				die ();
 				$planets = $db->getGalaxyPlanets ( array (
-						$galaxy 
+						$galaxy
 				) );
 			}
 			$smarty->assign ( 'action', '' );
@@ -98,7 +101,7 @@ switch ($action) {
 			$planetId = GetParam ( 'p', 'G' );
 			if (isset ( $planets [$planetId] )) {
 				$planets = $db->getSystemPlanets ( array (
-						$planets [$planetId] ['systemId'] 
+						$planets [$planetId] ['systemId']
 				) );
 				$planet = $planets [$planetId];
 				$planet ['id'] = $planetId;
@@ -112,6 +115,7 @@ switch ($action) {
 	case 'delete' :
 		break;
 	default :
+		$smarty->assign ( 'lastPlanet', GetParam ( 'lastPlanet', 'G', 1 ) );
 }
 $smarty->assign ( 'planets', $planets );
 $smarty->assign ( 'commodities', $commodities );

@@ -5,14 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="icon" href="{$style}/images/favicon.ico">
 <title>NMS Database</title>
-<link href="styles/{$style}/css/bootstrap.min.css" rel="stylesheet">
-<link href="styles/{$style}/css/custom.css" rel="stylesheet">
-<script src="styles/{$style}/js/jquery.min.js"></script>
-<script src="styles/{$style}/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/{$style}/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="styles/{$style}/css/custom.css">
 <link rel="stylesheet" type="text/css" href="styles/{$style}/css/datatables.min.css"/>
-<script type="text/javascript" src="styles/{$style}/js/datatables.min.js"></script>
-<script type="text/javascript" src="styles/{$style}/js/datatables.pageResize.min.js"></script>
-<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous"> -->
+<!-- 
+<link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.6/js/jquery.dataTables.min.js"></script>
+ -->
+<script type="text/javascript" language="javascript" src="styles/{$style}/js/jquery.min.js"></script>
+<script type="text/javascript" language="javascript" src="styles/{$style}/js/datatables.min.js"></script>
+<script type="text/javascript" language="javascript" src="styles/{$style}/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" language="javascript" src="styles/{$style}/js/datatables.pageResize.min.js"></script>
+<script type="text/javascript" language="javascript" src="styles/{$style}/js/page.jumpToData().js"></script>
 </head>
 <body>
 	{include file='navbar.tpl'}

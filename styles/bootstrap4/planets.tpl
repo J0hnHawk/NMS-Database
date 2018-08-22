@@ -167,15 +167,33 @@
 <script>
 	{literal}
 	var rows = parseInt(($( window ).height() - 210) / 46)
-	$(document).ready( function () {
-    	$('#table_planets').DataTable({
-    		"pageLength": rows,
-    		language: {
-		        url: './styles/bootstrap4/js/German.json'
-		    }
-    	});
-	} );
+	var table = $('#table_planets').DataTable({
+    	pageResize: true,
+    	"pageLength": rows,
+    	"language": {
+    		"sEmptyTable":      "Keine Daten in der Tabelle vorhanden",
+    		"sInfo":            "_START_ bis _END_ von _TOTAL_ Einträgen",
+    		"sInfoEmpty":       "Keine Daten vorhanden",
+    		"sInfoFiltered":    "(gefiltert von _MAX_ Einträgen)",
+    		"sInfoPostFix":     "",
+    		"sInfoThousands":   ".",
+    		"sLengthMenu":      "_MENU_ Einträge anzeigen",
+    		"sLoadingRecords":  "Wird geladen ..",
+    		"sProcessing":      "Bitte warten ..",
+    		"sSearch":          "Suchen",
+    		"sZeroRecords":     "Keine Einträge vorhanden",
+    		"oPaginate": {
+    			"sFirst":       "Erste",
+    		    "sPrevious":    "Zurück",
+    		    "sNext":        "Nächste",
+    		    "sLast":        "Letzte"
+    		}
+		}
+    });	
 	{/literal}
+	{if isset($lastPlanet)}
+	table.page.jumpToData( "{$lastPlanet}", 0 );
+	{/if}
 </script>
 <form class="form-inline float-right" method="POST" action="index.php?galaxy={$galaxy}&amp;page=planets&amp;mode=manage&amp;action=add">
 	<label class="mr-2" for="newSystem">Neuen Planeten hinzufügen</label> <input type="text" class="form-control mr-sm-2" name="newPlanet" placeholder="Name des Planeten">

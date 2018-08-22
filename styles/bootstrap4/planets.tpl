@@ -170,6 +170,7 @@
 	var table = $('#table_planets').DataTable({
     	pageResize: true,
     	"pageLength": rows,
+    	"dom": "ftp",
     	"language": {
     		"sEmptyTable":      "Keine Daten in der Tabelle vorhanden",
     		"sInfo":            "_START_ bis _END_ von _TOTAL_ Einträgen",

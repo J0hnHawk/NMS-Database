@@ -113,24 +113,33 @@
 		</tr>
 	</thead>
 	<tbody>
-		{$wealthClass[1]='class="text-danger"'}{$wealthClass[2]='class="text-warning"'}{$wealthClass[3]='class="text-success"'} {foreach $systems as
-		$systemId => $system}
+		{$color[1]='class="text-danger align-middle"'}{$color[-5]='class="align-middle"'}{$color[2]='class="text-warning align-middle"'}{$color[3]='class="text-success align-middle"'} {foreach $systems as $systemId => $system}
 		<tr>
-			<th>{$system.name}</th>
-			<td>{if $system.lifeformId!=null}{$lifeform[$system.lifeformId].name}{/if}</td>
-			<td {if $system.wealthId!=null}{$wealthClass[$wealth[$system.wealthId].wealth]}{/if}{if $system.economyId!=null}
-				data-order="{$economy[$system.economyId].type}{$economy[$system.economyId].name}"{/if}>{if $system.economyId!=null}<img
-				src="styles/{$style}/images/economy/{$economy[$system.economyId].typeName}.png" onerror="this.src='styles/{$style}/images/imgNotFound.png'"
-				class="mr-3" width="20px" height="20px">{$economy[$system.economyId].name}{/if}
+			<th class="align-middle">{$system.name}</th> {if $system.lifeformId!=null}
+			<td class="align-middle"><img src="styles/{$style}/images/lifeform/{$lifeform[$system.lifeformId].name|regex_replace:'/[^a-zA-Z0-9]/i':''}.png" onerror="this.src='styles/{$style}/images/imgNotFound.png'"
+				class="mr-3 " width="20px" height="20px">{$lifeform[$system.lifeformId].name}</td>{else}
+			<td>&nbsp;</td>{/if} {if $system.economyId!=null && $system.wealthId!=null}
+			<td
+				{$color[$wealth[$system.wealthId].wealth]}
+			<td {$color[$wealth[$system.wealthId].wealth]} data-order="{$economy[$system.economyId].type}{$economy[$system.economyId].name}">
+				<img src="styles/{$style}/images/economy/{$economy[$system.economyId].typeName}.png" onerror="this.src='styles/{$style}/images/imgNotFound.png'"
+				class="mr-3" width="20px" height="20px">{$economy[$system.economyId].name}
 			</td>
-			<td {if $system.wealthId!=null}{$wealthClass[$wealth[$system.wealthId].wealth]}
-				data-order="{$wealth[$system.wealthId].wealth}{$wealth[$system.wealthId].name}"{/if}>{if
-				$system.wealthId!=null}{$wealth[$system.wealthId].name}{/if}</td>
-			<td>{if $system.conflictId!=null}{$conflict[$system.conflictId].name}{/if}</td>
+				<td {$color[$wealth[$system.wealthId].wealth]} data-order="{$wealth[$system.wealthId].wealth}{$wealth[$system.wealthId].name}">
+				{$wealth[$system.wealthId].name}
+			</td>
+			{else}<td class="align-middle" data-order="9"><img src="styles/{$style}/images/economy/{$economy[$system.economyId].typeName}.png" onerror="this.src='styles/{$style}/images/imgNotFound.png'"
+				class="mr-3" width="20px" height="20px">{$economy[$system.economyId].name}</td>
+				<td>&nbsp;</td>{/if}
+			{if $system.conflictId!=null}
+				<td {$color[4-$conflict[$system.conflictId].conflictLevel]} data-order="{$conflict[$system.conflictId].conflictLevel}{$conflict[$system.conflictId].name}"><img src="styles/{$style}/images/conflict/{$conflict[$system.conflictId].tier}.png" onerror="this.src='styles/{$style}/images/imgNotFound.png'" class="img-fluid float-left mr-3 mb-2"
+										width="20px" height="20px">{$conflict[$system.conflictId].name}</td>
+			{else}<td>&nbsp;</td>{/if}
 			<td class="text-nowrap"><a class="btn btn-primary btn-sm"
 				href="index.php?galaxy={$galaxy}&amp;page=systems&amp;mode=manage&amp;action=edit&amp;s={$systemId}" role="button">Bearbeiten</a>
 				<button type="button" class="btn btn-danger btn-sm ml-1" data-toggle="modal" data-target="#deleteSystem" data-id="{$systemId}"
 					data-name="{$system.name}">Löschen</button></td>
+		
 		</tr>
 		{/foreach}
 	</tbody>
@@ -141,12 +150,13 @@
 	$(document).ready( function () {
     	$('#table_systems').DataTable({
     		"pageLength": rows,
-    		"dom": "ftp",
+    		"dom": '<"toolbar">ftp',
     		language: {
 		        url: './styles/bootstrap4/js/German.json'
 		    }
     	});
-	} );
+    	$("div.toolbar").html('<b>Custom tool bar! Text/images etc.</b>');
+	} );	
 	{/literal}
 </script>
 <form class="form-inline float-right" method="POST" action="index.php?galaxy={$galaxy}&amp;page=systems&amp;mode=manage&amp;action=add">

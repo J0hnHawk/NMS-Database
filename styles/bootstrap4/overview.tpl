@@ -1,10 +1,19 @@
-<h3>Übersicht</h3>
 <div class="row">
 	<div class="col-3">
-		<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+		<h3>Systeme</h3>
+		<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="display: block; overflow-y: scroll;">
 			{foreach $systems as $systemId => $system} <a {if $system@first}class="nav-link active" {else}class="nav-link" {/if} id="v-pills-{$systemId}-tab" data-toggle="pill" href="#v-pills-{$systemId}"
 				role="tab" aria-controls="v-pills-{$systemId}">{$system.name}</a> {/foreach}
 		</div>
+		<script>$('#v-pills-tab a').on('click', function (e) {
+			  e.preventDefault()
+			  $(this).tab('show')
+			})
+			$(window).resize(function() {
+
+$('#v-pills-tab').css('height', parseInt(window.innerHeight-200)+'px');
+
+});$('#v-pills-tab').css('height', parseInt(window.innerHeight-200)+'px');</script>
 	</div>
 	<div class="col-9">
 		<div class="tab-content" id="v-pills-tabContent">

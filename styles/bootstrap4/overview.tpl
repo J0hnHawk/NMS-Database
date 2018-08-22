@@ -33,7 +33,7 @@ $('#v-pills-tab').css('height', parseInt(window.innerHeight-200)+'px');
 									</p>
 								</section>
 								<section class="clearfix">
-									<img src="styles/{$style}/images/economy/{$economy[$system.economyId].type}.png" onerror="this.src='styles/{$style}/images/imgNotFound.png'" class="img-fluid float-left mr-3 mb-2"
+									<img src="styles/{$style}/images/economy/{$economy[$system.economyId].typeName}.png" onerror="this.src='styles/{$style}/images/imgNotFound.png'" class="img-fluid float-left mr-3 mb-2"
 										width="56px" height="56px">
 									<p>
 										<span class="text-secondary">Wirtschaft</span><br> <strong>{if $system.economyId!=null}{$economy[$system.economyId].name}{/if}{if $system.wealthId!=null} /

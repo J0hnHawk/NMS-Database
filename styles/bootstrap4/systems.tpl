@@ -120,7 +120,7 @@
 			<td>{if $system.lifeformId!=null}{$lifeform[$system.lifeformId].name}{/if}</td>
 			<td {if $system.wealthId!=null}{$wealthClass[$wealth[$system.wealthId].wealth]}{/if}{if $system.economyId!=null}
 				data-order="{$economy[$system.economyId].type}{$economy[$system.economyId].name}"{/if}>{if $system.economyId!=null}<img
-				src="styles/{$style}/images/economy/{$economy[$system.economyId].type}.png" onerror="this.src='styles/{$style}/images/imgNotFound.png'"
+				src="styles/{$style}/images/economy/{$economy[$system.economyId].typeName}.png" onerror="this.src='styles/{$style}/images/imgNotFound.png'"
 				class="mr-3" width="20px" height="20px">{$economy[$system.economyId].name}{/if}
 			</td>
 			<td {if $system.wealthId!=null}{$wealthClass[$wealth[$system.wealthId].wealth]}
